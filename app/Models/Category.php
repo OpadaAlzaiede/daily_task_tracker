@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends Model
 {
@@ -12,5 +13,13 @@ class Category extends Model
     protected $fillable = [
         'name',
         'user_id',
+    ];
+
+    public const DEFAULTS = [
+        'Personal',
+        'Work',
+        'Shopping',
+        'Travel',
+        'Others',
     ];
 }

@@ -51,4 +51,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Category::class);
     }
+
+    public function createDefaultCategories(): void
+    {
+        foreach (Category::DEFAULTS as $category) {
+            $this->categories()->create([
+                'name' => $category,
+            ]);
+        }
+    }
 }
