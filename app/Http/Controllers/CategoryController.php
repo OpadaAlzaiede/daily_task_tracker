@@ -10,7 +10,6 @@ use Illuminate\Http\RedirectResponse;
 
 class CategoryController extends Controller
 {
-
     /**
      * List all categories.
      *
