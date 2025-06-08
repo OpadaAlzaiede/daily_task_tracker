@@ -21,8 +21,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('categories', CategoryController::class);
 
-    Route::post('tasks/{id}/complete', [TaskController::class, 'complete'])->name('tasks.complete');
-    Route::post('tasks/{id}/incomplete', [TaskController::class, 'incomplete'])->name('tasks.incomplete');
+    Route::post('tasks/{task}/complete', [TaskController::class, 'complete'])->name('tasks.complete');
+    Route::post('tasks/{task}/incomplete', [TaskController::class, 'incomplete'])->name('tasks.incomplete');
     Route::resource('tasks', TaskController::class);
 });
 

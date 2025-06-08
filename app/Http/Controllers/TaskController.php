@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\Tasks\StoreRequest;
 use App\Http\Requests\Tasks\UpdateRequest;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class TaskController extends Controller
 {
@@ -43,6 +44,10 @@ class TaskController extends Controller
      */
     public function show(Task $task): View
     {
+        if(request()->user()->cannot('view', $task)) {
+            abort(403);
+        }
+
         return view('tasks.show', compact('task'));
     }
 
@@ -76,6 +81,7 @@ class TaskController extends Controller
             'due_date' => $request->validated('due_date'),
             'user_id' => auth()->user()->id,
             'category_id' => $request->validated('category_id'),
+            'completed_at' => $request->validated('completed_at') ?? null,
         ]);
 
         return redirect()->route('tasks.index')->with('message', 'Task created successfully.');
@@ -90,6 +96,10 @@ class TaskController extends Controller
      */
     public function edit(Task $task): View
     {
+        if(request()->user()->cannot('update', $task)) {
+            abort(403);
+        }
+
         $categories = Category::query()
                         ->where('user_id', auth()->user()->id)
                         ->orderBy('created_at', 'DESC')
@@ -108,6 +118,10 @@ class TaskController extends Controller
      */
     public function update(UpdateRequest $request, Task $task): RedirectResponse
     {
+        if(request()->user()->cannot('update', $task)) {
+            abort(403);
+        }
+
         $task->update($request->validated());
 
         return redirect()->route('tasks.index')->with('message', 'Task updated successfully.');
@@ -122,6 +136,10 @@ class TaskController extends Controller
      */
     public function destroy(Task $task): RedirectResponse
     {
+        if(request()->user()->cannot('delete', $task)) {
+            abort(403);
+        }
+
         $task->delete();
 
         return redirect()->route('tasks.index')->with('message', 'Task deleted successfully.');
@@ -139,7 +157,7 @@ class TaskController extends Controller
         $task->completed_at = now();
         $task->save();
 
-        return redirect()->route('tasks.index')->with('message', 'Task completed successfully.');
+        return redirect()->route('tasks.index')->with('message', 'Task marked as completed successfully!');
     }
 
     /**
@@ -154,6 +172,6 @@ class TaskController extends Controller
         $task->completed_at = null;
         $task->save();
 
-        return redirect()->route('tasks.index')->with('message', 'Task incompleted successfully.');
+        return redirect()->route('tasks.index')->with('message', 'Task marked as incomplete successfully!');
     }
 }

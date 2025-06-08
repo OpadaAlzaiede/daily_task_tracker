@@ -18,8 +18,9 @@ class CategoryController extends Controller
     public function index(): View
     {
         $categories = Category::query()
+                        ->withCount('tasks')
                         ->where('user_id', auth()->user()->id)
-                        ->paginate(3);
+                        ->paginate(5);
 
         return view('categories.index', compact('categories'));
     }
@@ -36,6 +37,8 @@ class CategoryController extends Controller
         if(request()->user()->cannot('view', $category)) {
             abort(403);
         }
+
+        $category->loadMissing('tasks');
 
         return view('categories.show', compact('category'));
     }

@@ -33,6 +33,9 @@
                                         Created At
                                     </th>
                                     <th scope="col" class="px-6 py-3">
+                                        # of tasks
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
                                         Action
                                     </th>
                                 </tr>
@@ -45,6 +48,9 @@
                                         </td>
                                         <td class="px-3 py-4">
                                             {{ $category->created_at->format('d/m/Y') }}
+                                        </td>
+                                        <td class="px-3 py-4">
+                                            {{ $category->tasks_count }}
                                         </td>
                                         <td class="flex px-6 py-4">
                                             <a href="{{ route('categories.show', $category->id) }}" class="font-small text-green-600 dark:text-green-500 hover:underline ms-3">SHOW</a>
