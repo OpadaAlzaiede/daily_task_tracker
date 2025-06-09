@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Policies\Traits\HandlesOwnership;
 
 class RecurringTaskPolicy
@@ -19,6 +18,7 @@ class RecurringTaskPolicy
     {
         if (array_key_exists($method, $this->actionMessages)) {
             [$user, $recurringTask] = $arguments;
+
             return $this->authorizeOwnership(
                 $recurringTask->user_id,
                 $this->actionMessages[$method]

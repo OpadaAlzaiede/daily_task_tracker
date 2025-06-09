@@ -18,6 +18,7 @@ class TaskPolicy
     {
         if (array_key_exists($method, $this->actionMessages)) {
             [$user, $task] = $arguments;
+
             return $this->authorizeOwnership(
                 $task->user_id,
                 $this->actionMessages[$method]

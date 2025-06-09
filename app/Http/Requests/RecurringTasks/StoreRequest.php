@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\RecurringTasks;
 
-use Illuminate\Validation\Rule;
 use App\Enums\RecurringTaskUnit;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {

@@ -2,49 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
-use App\Models\Category;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\Tasks\StoreRequest;
 use App\Http\Requests\Tasks\UpdateRequest;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Models\Category;
+use App\Models\Task;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class TaskController extends Controller
 {
     /**
      * List all tasks.
-     *
-     * @return View
      */
     public function index(): View
     {
         $tasks = Task::query()
-                    ->with('category:id,name')
-                    ->select([
-                        'id',
-                        'title',
-                        'category_id',
-                        'due_date',
-                        'completed_at',
-                    ])
-                    ->where('user_id', auth()->user()->id)
-                    ->orderBy('due_date', 'DESC')
-                    ->paginate(10);
+            ->with('category:id,name')
+            ->select([
+                'id',
+                'title',
+                'category_id',
+                'due_date',
+                'completed_at',
+            ])
+            ->where('user_id', auth()->user()->id)
+            ->orderBy('due_date', 'DESC')
+            ->paginate(10);
 
         return view('tasks.index', compact('tasks'));
     }
 
     /**
      * Show task.
-     *
-     * @param Task $task
-     *
-     * @return View
      */
     public function show(Task $task): View
     {
-        if(request()->user()->cannot('view', $task)) {
+        if (request()->user()->cannot('view', $task)) {
             abort(403);
         }
 
@@ -53,25 +46,19 @@ class TaskController extends Controller
 
     /**
      * Show the form for creating a new task.
-     *
-     * @return View
      */
     public function create(): View
     {
         $categories = Category::query()
-                        ->where('user_id', auth()->user()->id)
-                        ->orderBy('created_at', 'DESC')
-                        ->get();
+            ->where('user_id', auth()->user()->id)
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
         return view('tasks.create', compact('categories'));
     }
 
     /**
      * Store a new task.
-     *
-     * @param StoreRequest $request
-     *
-     * @return RedirectResponse
      */
     public function store(StoreRequest $request): RedirectResponse
     {
@@ -89,36 +76,27 @@ class TaskController extends Controller
 
     /**
      * Show the form for editing the specified task.
-     *
-     * @param Task $task
-     *
-     * @return View
      */
     public function edit(Task $task): View
     {
-        if(request()->user()->cannot('update', $task)) {
+        if (request()->user()->cannot('update', $task)) {
             abort(403);
         }
 
         $categories = Category::query()
-                        ->where('user_id', auth()->user()->id)
-                        ->orderBy('created_at', 'DESC')
-                        ->get();
+            ->where('user_id', auth()->user()->id)
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
         return view('tasks.edit', compact('task', 'categories'));
     }
 
     /**
      * Update the specified task.
-     *
-     * @param UpdateRequest $request
-     * @param Task $task
-     *
-     * @return RedirectResponse
      */
     public function update(UpdateRequest $request, Task $task): RedirectResponse
     {
-        if(request()->user()->cannot('update', $task)) {
+        if (request()->user()->cannot('update', $task)) {
             abort(403);
         }
 
@@ -129,14 +107,10 @@ class TaskController extends Controller
 
     /**
      * Remove the specified task.
-     *
-     * @param Task $task
-     *
-     * @return RedirectResponse
      */
     public function destroy(Task $task): RedirectResponse
     {
-        if(request()->user()->cannot('delete', $task)) {
+        if (request()->user()->cannot('delete', $task)) {
             abort(403);
         }
 
@@ -147,10 +121,6 @@ class TaskController extends Controller
 
     /**
      * Mark task as completed.
-     *
-     * @param Task $task
-     *
-     * @return RedirectResponse
      */
     public function complete(Task $task): RedirectResponse
     {
@@ -162,10 +132,6 @@ class TaskController extends Controller
 
     /**
      * Mark task as incomplete.
-     *
-     * @param Task $task
-     *
-     * @return RedirectResponse
      */
     public function incomplete(Task $task): RedirectResponse
     {

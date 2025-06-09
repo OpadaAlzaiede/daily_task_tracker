@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
-use App\Models\Task;
 use App\Models\RecurringTask;
+use App\Models\Task;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class GenerateRecurringTasksCommand extends Command
@@ -50,7 +50,7 @@ class GenerateRecurringTasksCommand extends Command
                 }
             });
 
-            Task::insert($tasks);
+        Task::insert($tasks);
 
         $this->info('Recurring tasks generated successfully.');
     }

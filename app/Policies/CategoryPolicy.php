@@ -18,6 +18,7 @@ class CategoryPolicy
     {
         if (array_key_exists($method, $this->actionMessages)) {
             [$user, $category] = $arguments;
+
             return $this->authorizeOwnership(
                 $category->user_id,
                 $this->actionMessages[$method]

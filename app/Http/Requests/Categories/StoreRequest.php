@@ -27,7 +27,7 @@ class StoreRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('categories')->where('user_id', auth()->user()->id)
+                Rule::unique('categories')->where('user_id', auth()->user()->id),
             ],
         ];
     }

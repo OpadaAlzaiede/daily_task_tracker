@@ -14,7 +14,7 @@ class TaskSeeder extends Seeder
     public function run(): void
     {
         User::all()->each(function ($user) {
-            $user->categories()->each(function ($category) use($user) {
+            $user->categories()->each(function ($category) use ($user) {
                 Task::factory()->count(5)->create([
                     'user_id' => $user->id,
                     'category_id' => $category->id,

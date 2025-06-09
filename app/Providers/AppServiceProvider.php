@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
-use App\Models\Task;
 use App\Models\Category;
-use App\Policies\TaskPolicy;
 use App\Models\RecurringTask;
+use App\Models\Task;
 use App\Policies\CategoryPolicy;
-use Illuminate\Support\Facades\Gate;
 use App\Policies\RecurringTaskPolicy;
+use App\Policies\TaskPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RecurringTasks\StoreRequest;
 use App\Models\Category;
 use App\Models\RecurringTask;
 use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\RecurringTasks\StoreRequest;
 
 class RecurringTaskController extends Controller
 {
     public function index()
     {
         $recurringTasks = RecurringTask::query()
-                            ->with('category:id,name')
-                            ->where('user_id', auth()->user()->id)
-                            ->orderBy('created_at', 'DESC')
-                            ->paginate(10);
+            ->with('category:id,name')
+            ->where('user_id', auth()->user()->id)
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
 
         return view('recurring-tasks.index', compact('recurringTasks'));
     }
 
     public function show(RecurringTask $recurringTask)
     {
-        if(request()->user()->cannot('view', $recurringTask)) {
+        if (request()->user()->cannot('view', $recurringTask)) {
             abort(403);
         }
 
@@ -32,9 +32,9 @@ class RecurringTaskController extends Controller
     public function create()
     {
         $categories = Category::query()
-                        ->where('user_id', auth()->user()->id)
-                        ->orderBy('created_at', 'DESC')
-                        ->get();
+            ->where('user_id', auth()->user()->id)
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
         return view('recurring-tasks.create', compact('categories'));
     }
@@ -57,7 +57,7 @@ class RecurringTaskController extends Controller
 
     public function destroy(RecurringTask $recurringTask): RedirectResponse
     {
-        if(request()->user()->cannot('delete', $recurringTask)) {
+        if (request()->user()->cannot('delete', $recurringTask)) {
             abort(403);
         }
 

@@ -39,7 +39,7 @@ class RecurringTask extends Model
 
         return match ($frequencyUnit->value) {
             RecurringTaskUnit::DAY->value => $dueDate->addDays($frequency),
-            RecurringTaskUnit::WEEK->value=> $dueDate->addWeeks($frequency),
+            RecurringTaskUnit::WEEK->value => $dueDate->addWeeks($frequency),
             RecurringTaskUnit::MONTH->value => $dueDate->addMonths($frequency),
             RecurringTaskUnit::YEAR->value => $dueDate->addYears($frequency),
         };

@@ -12,29 +12,23 @@ class CategoryController extends Controller
 {
     /**
      * List all categories.
-     *
-     * @return View
      */
     public function index(): View
     {
         $categories = Category::query()
-                        ->withCount('tasks')
-                        ->where('user_id', auth()->user()->id)
-                        ->paginate(5);
+            ->withCount('tasks')
+            ->where('user_id', auth()->user()->id)
+            ->paginate(5);
 
         return view('categories.index', compact('categories'));
     }
 
     /**
      * Show category.
-     *
-     * @param Category $category
-     *
-     * @return View
      */
     public function show(Category $category): View
     {
-        if(request()->user()->cannot('view', $category)) {
+        if (request()->user()->cannot('view', $category)) {
             abort(403);
         }
 
@@ -45,8 +39,6 @@ class CategoryController extends Controller
 
     /**
      * Show the form for creating a new category.
-     *
-     * @return View
      */
     public function create(): View
     {
@@ -55,10 +47,6 @@ class CategoryController extends Controller
 
     /**
      * Store a new category.
-     *
-     * @param StoreRequest $request
-     *
-     * @return RedirectResponse
      */
     public function store(StoreRequest $request): RedirectResponse
     {
@@ -72,14 +60,10 @@ class CategoryController extends Controller
 
     /**
      * Show the form for editing the specified category.
-     *
-     * @param Category $category
-     *
-     * @return View
      */
     public function edit(Category $category): View
     {
-        if(request()->user()->cannot('update', $category)) {
+        if (request()->user()->cannot('update', $category)) {
             abort(403);
         }
 
@@ -88,15 +72,10 @@ class CategoryController extends Controller
 
     /**
      * Update the specified category.
-     *
-     * @param UpdateRequest $request
-     * @param Category $category
-     *
-     * @return RedirectResponse
      */
     public function update(UpdateRequest $request, Category $category): RedirectResponse
     {
-        if(request()->user()->cannot('update', $category)) {
+        if (request()->user()->cannot('update', $category)) {
             abort(403);
         }
 
@@ -107,14 +86,10 @@ class CategoryController extends Controller
 
     /**
      * Remove the specified category.
-     *
-     * @param Category $category
-     *
-     * @return RedirectResponse
      */
     public function destroy(Category $category): RedirectResponse
     {
-        if(request()->user()->cannot('delete', $category)) {
+        if (request()->user()->cannot('delete', $category)) {
             abort(403);
         }
 
