@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\TaskController;
+use App\Http\Controllers\RecurringTaskController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,6 +25,8 @@ Route::middleware('auth')->group(function () {
     Route::post('tasks/{task}/complete', [TaskController::class, 'complete'])->name('tasks.complete');
     Route::post('tasks/{task}/incomplete', [TaskController::class, 'incomplete'])->name('tasks.incomplete');
     Route::resource('tasks', TaskController::class);
+
+    Route::resource('recurring-tasks', RecurringTaskController::class);
 });
 
 require __DIR__.'/auth.php';

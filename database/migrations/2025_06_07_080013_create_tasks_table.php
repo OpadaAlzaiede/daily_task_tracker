@@ -21,6 +21,7 @@ return new class extends Migration
             $table->dateTime('completed_at')->nullable();
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Category::class);
+            $table->unsignedBigInteger('recurring_task_id')->nullable();
             $table->timestamps();
         });
     }

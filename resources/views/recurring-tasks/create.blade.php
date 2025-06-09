@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Tasks') }}
+            {{ __('Recurring Tasks') }}
         </h2>
     </x-slot>
 
@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form action="{{ route('tasks.store') }}" method="POST">
+                    <form action="{{ route('recurring-tasks.store') }}" method="POST">
                         @csrf
                         <div class="mb-5">
                             <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
@@ -38,17 +38,29 @@
                             @endif
                         </div>
                         <div class="mb-5">
-                            <label for="due_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Due date</label>
-                            <input type="date" name="due_date" value="{{ old('due_date') }}" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-                            @if($errors->has('due_date'))
-                                <div class="text-red-500 text-xs">{{ $errors->first('due_date') }}</div>
+                            <label for="frequency" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Frequency</label>
+                            <input type="number" name="frequency" value="{{ old('frequency') }}" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                            @if($errors->has('frequency'))
+                                <div class="text-red-500 text-xs">{{ $errors->first('frequency') }}</div>
                             @endif
                         </div>
                         <div class="mb-5">
-                            <label for="completed_at" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Completed at</label>
-                            <input type="date" name="completed_at" value="{{ old('completed_at') }}" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                            @if($errors->has('completed_at'))
-                                <div class="text-red-500 text-xs">{{ $errors->first('completed_at') }}</div>
+                            <label for="frequency_unit" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Frequency unit</label>
+                            <select id="frequency_unit" name="frequency_unit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                <option selected>Choose a unit</option>
+                                @foreach(\App\Enums\RecurringTaskUnit::cases() as $unit)
+                                    <option value="{{ $unit->value }}">{{ $unit->name }}</option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('frequency_unit'))
+                                <div class="text-red-500 text-xs">{{ $errors->first('frequency_unit') }}</div>
+                            @endif
+                        </div>
+                        <div class="mb-5">
+                            <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Start date</label>
+                            <input type="date" name="start_date" value="{{ old('start_date') }}" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                            @if($errors->has('start_date'))
+                                <div class="text-red-500 text-xs">{{ $errors->first('start_date') }}</div>
                             @endif
                         </div>
                         <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create</button>
