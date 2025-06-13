@@ -19,8 +19,8 @@ return new class extends Migration
             $table->text('description');
             $table->datetime('due_date');
             $table->dateTime('completed_at')->nullable();
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Category::class);
+            $table->foreignIdFor(User::class)->index();
+            $table->foreignIdFor(Category::class)->index();
             $table->unsignedBigInteger('recurring_task_id')->nullable();
             $table->timestamps();
         });

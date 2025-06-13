@@ -30,7 +30,7 @@ class GenerateRecurringTasksCommand extends Command
 
         RecurringTask::query()
             ->where('next_due_date', '<=', $now)
-            ->chunk(100, function ($recurringTasks) use (&$tasks) {
+            ->chunk(100, function ($recurringTasks) use (&$tasks, $now) {
                 foreach ($recurringTasks as $recurringTask) {
 
                     $nextDueDate = $recurringTask->calculateNextDueDate();
@@ -42,6 +42,7 @@ class GenerateRecurringTasksCommand extends Command
                         'title' => $recurringTask->title,
                         'description' => $recurringTask->description,
                         'due_date' => $nextDueDate,
+                        'created_at' => $now,
                     ];
 
                     $recurringTask->update([
