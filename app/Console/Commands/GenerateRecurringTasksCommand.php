@@ -48,10 +48,10 @@ class GenerateRecurringTasksCommand extends Command
                         'next_due_date' => $nextDueDate,
                     ]);
                 }
+
+                Task::insert($tasks);
+                $tasks = [];
             });
-
-        Task::insert($tasks);
-
         $this->info('Recurring tasks generated successfully.');
     }
 }

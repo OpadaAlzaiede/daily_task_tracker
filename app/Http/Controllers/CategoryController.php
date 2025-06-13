@@ -18,6 +18,7 @@ class CategoryController extends Controller
         $categories = Category::query()
             ->withCount('tasks')
             ->where('user_id', auth()->user()->id)
+            ->orderBy('tasks_count', 'DESC')
             ->paginate(5);
 
         return view('categories.index', compact('categories'));

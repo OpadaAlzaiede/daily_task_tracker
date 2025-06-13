@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Tasks\FilterRequest;
 use App\Http\Requests\Tasks\StoreRequest;
 use App\Http\Requests\Tasks\UpdateRequest;
 use App\Models\Category;
@@ -14,8 +15,13 @@ class TaskController extends Controller
     /**
      * List all tasks.
      */
-    public function index(): View
+    public function index(FilterRequest $request): View
     {
+        $categories = Category::query()
+            ->where('user_id', auth()->user()->id)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
         $tasks = Task::query()
             ->with('category:id,name')
             ->select([
@@ -24,12 +30,25 @@ class TaskController extends Controller
                 'category_id',
                 'due_date',
                 'completed_at',
+                'created_at'
             ])
+            ->when($request->category_id, function ($query) use ($request) {
+                return $query->where('category_id', $request->category_id);
+            })
+            ->when($request->from_date && request()->to_date, function ($query) use ($request) {
+                return $query->whereBetween('created_at', [$request->from_date, $request->to_date]);
+            })
+            ->when($request->status === 'completed', function ($query) {
+                return $query->whereNotNull('completed_at');
+            })
+            ->when($request->status === 'incomplete', function ($query) {
+                return $query->whereNull('completed_at');
+            })
             ->where('user_id', auth()->user()->id)
             ->orderBy('due_date', 'DESC')
             ->paginate(10);
 
-        return view('tasks.index', compact('tasks'));
+        return view('tasks.index', compact('tasks', 'categories'));
     }
 
     /**
@@ -127,7 +146,7 @@ class TaskController extends Controller
         $task->completed_at = now();
         $task->save();
 
-        return redirect()->route('tasks.index')->with('message', 'Task marked as completed successfully!');
+        return redirect()->back()->with('message', 'Task marked as completed successfully!');
     }
 
     /**
