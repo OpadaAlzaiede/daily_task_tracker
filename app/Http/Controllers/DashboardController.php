@@ -16,13 +16,13 @@ class DashboardController extends Controller
                     ->selectRaw('
                         COUNT(CASE WHEN completed_at >= ? AND completed_at < ? THEN 1 END) as completed_today,
                         COUNT(CASE WHEN due_date >= ? AND due_date < ? AND completed_at IS NULL THEN 1 END) as incomplete_today,
-                        COUNT(CASE WHEN due_date < ? THEN 1 END) as overdue
+                        COUNT(CASE WHEN due_date < ? AND completed_at IS NULL THEN 1 END) as overdue
                     ', [
                         $startOfTheDay,
                         $endOfTheDay,
                         $startOfTheDay,
                         $endOfTheDay,
-                        $now
+                        $startOfTheDay
                     ])
                     ->where('user_id', auth()->user()->id)
                     ->first();
